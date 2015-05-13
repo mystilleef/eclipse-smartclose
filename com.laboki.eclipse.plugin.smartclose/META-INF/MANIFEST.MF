@@ -9,5 +9,33 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Export-Package: com.laboki.eclipse.plugin.smartclose;uses:="org.osgi.framework,org.eclipse.ui,org.eclipse.ui.plugin",
+Export-Package: com.google.common.annotations,
+ com.google.common.base;uses:="new com.google.common.base",
+ com.google.common.base.internal;x-internal:=true,
+ com.google.common.cache;
+  uses:="com.google.common.base,
+   new com.google.common.cache,
+   com.google.common.util.concurrent,
+   com.google.common.collect,
+   sun.misc",
+ com.google.common.collect;uses:="com.google.common.base,new new com.google.common.collect,new com.google.common.collect",
+ com.google.common.escape;uses:="com.google.common.base,new com.google.common.escape",
+ com.google.common.eventbus;uses:="com.google.common.cache,com.google.common.collect",
+ com.google.common.hash;uses:="new com.google.common.hash,com.google.common.base",
+ com.google.common.html;uses:="com.google.common.escape",
+ com.google.common.io;
+  uses:="new com.google.common.io,
+   com.google.common.base,
+   com.google.common.hash,
+   com.google.common.collect",
+ com.google.common.math,
+ com.google.common.net;uses:="com.google.common.base,com.google.common.escape,com.google.common.collect",
+ com.google.common.primitives;uses:="com.google.common.base,sun.misc",
+ com.google.common.reflect;uses:="com.google.common.base,new com.google.common.reflect,com.google.common.collect",
+ com.google.common.util.concurrent;uses:="new com.google.common.util.concurrent,com.google.common.base,com.google.common.collect",
+ com.google.common.xml;uses:="com.google.common.escape",
+ com.google.thirdparty.publicsuffix;uses:="com.google.common.collect",
+ com.laboki.eclipse.plugin.smartclose;uses:="org.osgi.framework,org.eclipse.ui,org.eclipse.ui.plugin",
  com.laboki.eclipse.plugin.smartclose.main
+Bundle-ClassPath: .,
+ libs/guava-18.0.jar
