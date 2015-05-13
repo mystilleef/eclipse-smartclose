@@ -7,10 +7,12 @@ import org.eclipse.ui.IEditorPart;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Queues;
+import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import com.laboki.eclipse.plugin.smartclose.events.PartActivatedEvent;
 import com.laboki.eclipse.plugin.smartclose.events.PartCloseTimerEvent;
 import com.laboki.eclipse.plugin.smartclose.events.PartClosedEvent;
+import com.laboki.eclipse.plugin.smartclose.events.PreferencesChangedEvent;
 import com.laboki.eclipse.plugin.smartclose.instance.EventBusInstance;
 import com.laboki.eclipse.plugin.smartclose.instance.Instance;
 import com.laboki.eclipse.plugin.smartclose.preferences.Store;
@@ -19,7 +21,7 @@ import com.laboki.eclipse.plugin.smartclose.task.TaskMutexRule;
 
 public final class PartTracker extends EventBusInstance {
 
-	protected static final int WATERMARK = Store.getNumberOfTabs();
+	protected int watermark = Store.getNumberOfTabs();
 	private static final TaskMutexRule RULE = new TaskMutexRule();
 	protected final ArrayDeque<IEditorPart> deque = Queues.newArrayDeque();
 
@@ -45,7 +47,7 @@ public final class PartTracker extends EventBusInstance {
 
 			private void
 			trimDeque() {
-				if (PartTracker.this.deque.size() <= PartTracker.WATERMARK) return;
+				if (PartTracker.this.deque.size() <= PartTracker.this.watermark) return;
 				this.broadcastEvent(PartTracker.this.deque.removeLast());
 				this.trimDeque();
 			}
@@ -55,6 +57,20 @@ public final class PartTracker extends EventBusInstance {
 				EventBus.post(new PartCloseTimerEvent(part));
 			}
 		}.setPriority(Job.INTERACTIVE).setRule(PartTracker.RULE).start();
+	}
+
+	@Subscribe
+	@AllowConcurrentEvents
+	public void
+	eventHandler(final PreferencesChangedEvent event) {
+		new Task() {
+
+			@Override
+			public void
+			execute() {
+				PartTracker.this.watermark = Store.getNumberOfTabs();
+			}
+		}.setRule(PartTracker.RULE).start();
 	}
 
 	@Subscribe

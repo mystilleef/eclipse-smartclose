@@ -9,15 +9,18 @@ import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import com.laboki.eclipse.plugin.smartclose.events.PartActivatedEvent;
 import com.laboki.eclipse.plugin.smartclose.events.PartClosedEvent;
+import com.laboki.eclipse.plugin.smartclose.events.PreferencesChangedEvent;
 import com.laboki.eclipse.plugin.smartclose.instance.EventBusInstance;
 import com.laboki.eclipse.plugin.smartclose.instance.Instance;
 import com.laboki.eclipse.plugin.smartclose.preferences.Store;
 import com.laboki.eclipse.plugin.smartclose.task.AsyncTask;
 import com.laboki.eclipse.plugin.smartclose.task.Task;
+import com.laboki.eclipse.plugin.smartclose.task.TaskMutexRule;
 
 public final class ClosePartTimer extends EventBusInstance {
 
-	protected static final int DELAY = Store.getDelayTime();
+	private static final TaskMutexRule RULE = new TaskMutexRule();
+	protected int delay = Store.getDelayTime();
 	protected final IEditorPart part;
 	protected Task closeTimer;
 
@@ -33,7 +36,7 @@ public final class ClosePartTimer extends EventBusInstance {
 			@Override
 			public void
 			execute() {
-				if (this.editorIsDirty()) this.reschedule(ClosePartTimer.DELAY);
+				if (this.editorIsDirty()) this.reschedule(ClosePartTimer.this.delay);
 				else this.closePart(ClosePartTimer.this.part);
 			}
 
@@ -60,8 +63,23 @@ public final class ClosePartTimer extends EventBusInstance {
 	@Override
 	public Instance
 	start() {
-		this.closeTimer.setDelay(ClosePartTimer.DELAY).start();
+		this.closeTimer.setDelay(this.delay).start();
 		return super.start();
+	}
+
+	@Subscribe
+	@AllowConcurrentEvents
+	public void
+	eventHandler(final PreferencesChangedEvent event) {
+		new Task() {
+
+			@Override
+			public void
+			execute() {
+				ClosePartTimer.this.delay = Store.getDelayTime();
+				ClosePartTimer.this.closeTimer.reschedule(ClosePartTimer.this.delay);
+			}
+		}.setRule(ClosePartTimer.RULE).start();
 	}
 
 	@Subscribe
