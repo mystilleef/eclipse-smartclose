@@ -2,11 +2,11 @@ package com.laboki.eclipse.plugin.smartclose.instance;
 
 import com.laboki.eclipse.plugin.smartclose.main.EventBus;
 
-public abstract class AbstractEventBusInstance implements Instance {
+public abstract class EventBusInstance implements Instance {
 
 	private boolean isRegistered = false;
 
-	protected AbstractEventBusInstance() {}
+	protected EventBusInstance() {}
 
 	@Override
 	public Instance

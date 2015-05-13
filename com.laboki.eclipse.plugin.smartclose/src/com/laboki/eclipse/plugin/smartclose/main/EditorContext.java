@@ -3,8 +3,10 @@ package com.laboki.eclipse.plugin.smartclose.main;
 import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPartService;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
@@ -27,9 +29,24 @@ public enum EditorContext {
 			.getService(IPartService.class));
 	}
 
-	private static Optional<IWorkbenchWindow>
+	public static Optional<IEditorPart>
+	getEditor() {
+		final Optional<IWorkbenchWindow> window =
+			EditorContext.getActiveWorkbenchWindow();
+		if (!window.isPresent()) return Optional.absent();
+		final Optional<IWorkbenchPage> page = EditorContext.getActivePage(window);
+		if (!page.isPresent()) return Optional.absent();
+		return Optional.fromNullable(page.get().getActiveEditor());
+	}
+
+	public static Optional<IWorkbenchWindow>
 	getActiveWorkbenchWindow() {
 		return Optional.fromNullable(EditorContext.WORKBENCH.getActiveWorkbenchWindow());
+	}
+
+	public static Optional<IWorkbenchPage>
+	getActivePage(final Optional<IWorkbenchWindow> activeWorkbenchWindow) {
+		return Optional.fromNullable(activeWorkbenchWindow.get().getActivePage());
 	}
 
 	public static void
