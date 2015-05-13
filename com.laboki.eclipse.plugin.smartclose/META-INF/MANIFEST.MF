@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: com.laboki.eclipse.plugin.smartclose;singleton:=true
-Bundle-Version: 20150512
+Bundle-Version: 20150513
 Bundle-Activator: com.laboki.eclipse.plugin.smartclose.Activator
 Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: org.eclipse.ui,
@@ -35,10 +35,23 @@ Export-Package: com.google.common.annotations,
  com.google.common.util.concurrent;uses:="new com.google.common.util.concurrent,com.google.common.base,com.google.common.collect",
  com.google.common.xml;uses:="com.google.common.escape",
  com.google.thirdparty.publicsuffix;uses:="com.google.common.collect",
- com.laboki.eclipse.plugin.smartclose;uses:="org.osgi.framework,org.eclipse.ui,org.eclipse.ui.plugin",
- com.laboki.eclipse.plugin.smartclose.events,
+ com.laboki.eclipse.plugin.smartclose;
+  uses:="org.osgi.framework,
+   org.eclipse.ui,
+   com.laboki.eclipse.plugin.smartclose.instance,
+   com.laboki.eclipse.plugin.smartclose.main,
+   org.eclipse.ui.plugin",
+ com.laboki.eclipse.plugin.smartclose.events;uses:="org.eclipse.ui",
  com.laboki.eclipse.plugin.smartclose.instance,
- com.laboki.eclipse.plugin.smartclose.main,
- com.laboki.eclipse.plugin.smartclose.task
+ com.laboki.eclipse.plugin.smartclose.main;
+  uses:="org.eclipse.core.runtime.jobs,
+   org.eclipse.ui,
+   com.laboki.eclipse.plugin.smartclose.instance,
+   com.google.common.base,
+   com.laboki.eclipse.plugin.smartclose.events,
+   org.eclipse.swt.widgets,
+   com.google.common.eventbus,
+   com.laboki.eclipse.plugin.smartclose.task",
+ com.laboki.eclipse.plugin.smartclose.task;uses:="org.eclipse.core.runtime.jobs,com.laboki.eclipse.plugin.smartclose.instance,org.eclipse.core.runtime"
 Bundle-ClassPath: .,
  libs/guava-18.0.jar
