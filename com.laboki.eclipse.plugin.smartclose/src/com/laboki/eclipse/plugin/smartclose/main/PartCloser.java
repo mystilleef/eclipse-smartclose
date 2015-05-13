@@ -2,6 +2,7 @@ package com.laboki.eclipse.plugin.smartclose.main;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.IEditorPart;
 
 import com.google.common.collect.Lists;
@@ -59,6 +60,6 @@ public final class PartCloser extends EventBusInstance {
 			execute() {
 				PartCloser.this.parts.remove(part);
 			}
-		}.setRule(PartCloser.RULE).start();
+		}.setPriority(Job.INTERACTIVE).setRule(PartCloser.RULE).start();
 	}
 }

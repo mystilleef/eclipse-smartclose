@@ -13,7 +13,7 @@ public enum Store {
 	INSTANCE;
 
 	private static final int DEFAULT_NUMBER_OF_TABS = 5;
-	private static final String NUMBER_OF_TABS = "SmartSaveNumberOfTabs";
+	private static final String NUMBER_OF_TABS = "SmartCloseNumberOfTabs";
 	private static final int DEFAULT_DELAY_TIME = 300000;
 	private static final String DELAY_TIME = "SmartCloseDelayTime";
 	private static final Logger LOGGER = Logger.getLogger(Store.class.getName());
