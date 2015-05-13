@@ -1,10 +1,14 @@
 package com.laboki.eclipse.plugin.smartclose.main;
 
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IPartService;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.google.common.base.Optional;
+import com.laboki.eclipse.plugin.smartclose.events.PartActivatedEvent;
+import com.laboki.eclipse.plugin.smartclose.events.PartClosedEvent;
+import com.laboki.eclipse.plugin.smartclose.events.PartDeactivatedEvent;
 import com.laboki.eclipse.plugin.smartclose.instance.Instance;
 
 public enum PartMonitor implements Instance {
@@ -20,11 +24,17 @@ public enum PartMonitor implements Instance {
 
 		@Override
 		public void
-		partActivated(final IWorkbenchPart part) {}
+		partActivated(final IWorkbenchPart part) {
+			if (PartListener.isNotEditorPart(part)) return;
+			EventBus.post(new PartActivatedEvent((IEditorPart) part));
+		}
 
 		@Override
 		public void
-		partClosed(final IWorkbenchPart part) {}
+		partClosed(final IWorkbenchPart part) {
+			if (PartListener.isNotEditorPart(part)) return;
+			EventBus.post(new PartClosedEvent((IEditorPart) part));
+		}
 
 		@Override
 		public void
@@ -32,11 +42,24 @@ public enum PartMonitor implements Instance {
 
 		@Override
 		public void
-		partDeactivated(final IWorkbenchPart part) {}
+		partDeactivated(final IWorkbenchPart part) {
+			if (PartListener.isNotEditorPart(part)) return;
+			EventBus.post(new PartDeactivatedEvent((IEditorPart) part));
+		}
 
 		@Override
 		public void
 		partOpened(final IWorkbenchPart part) {}
+
+		private static boolean
+		isNotEditorPart(final IWorkbenchPart part) {
+			return !PartListener.isEditorPart(part);
+		}
+
+		private static boolean
+		isEditorPart(final IWorkbenchPart part) {
+			return part instanceof IEditorPart;
+		}
 	}
 
 	@Override
