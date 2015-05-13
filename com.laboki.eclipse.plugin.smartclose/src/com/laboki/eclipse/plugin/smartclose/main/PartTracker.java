@@ -18,7 +18,7 @@ import com.laboki.eclipse.plugin.smartclose.task.TaskMutexRule;
 
 public final class PartTracker extends EventBusInstance {
 
-	protected static final int WATERMARK = 2;
+	protected static final int WATERMARK = 5;
 	private static final TaskMutexRule RULE = new TaskMutexRule();
 	protected final ArrayDeque<IEditorPart> deque = Queues.newArrayDeque();
 
