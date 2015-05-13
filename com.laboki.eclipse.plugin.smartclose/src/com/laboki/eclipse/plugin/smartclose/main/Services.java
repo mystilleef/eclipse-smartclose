@@ -22,6 +22,7 @@ public final class Services implements Instance {
 		this.startService(new PartCloser());
 		this.startService(new PartTracker());
 		this.startService(PartMonitor.INSTANCE);
+		this.startService(new PreferencesListener());
 	}
 
 	private void
