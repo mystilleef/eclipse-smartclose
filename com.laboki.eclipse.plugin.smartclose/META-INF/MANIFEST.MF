@@ -36,6 +36,8 @@ Export-Package: com.google.common.annotations,
  com.google.common.xml;uses:="com.google.common.escape",
  com.google.thirdparty.publicsuffix;uses:="com.google.common.collect",
  com.laboki.eclipse.plugin.smartclose;uses:="org.osgi.framework,org.eclipse.ui,org.eclipse.ui.plugin",
- com.laboki.eclipse.plugin.smartclose.main
+ com.laboki.eclipse.plugin.smartclose.instance,
+ com.laboki.eclipse.plugin.smartclose.main,
+ com.laboki.eclipse.plugin.smartclose.task
 Bundle-ClassPath: .,
  libs/guava-18.0.jar
