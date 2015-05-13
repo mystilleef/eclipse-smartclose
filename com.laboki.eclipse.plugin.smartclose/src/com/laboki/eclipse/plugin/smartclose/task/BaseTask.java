@@ -89,7 +89,7 @@ public abstract class BaseTask implements Runnable, Instance, ExecuteTask {
 		return this;
 	}
 
-	protected void
+	public void
 	reschedule(final long delay) {
 		this.job.schedule(delay);
 		return;
