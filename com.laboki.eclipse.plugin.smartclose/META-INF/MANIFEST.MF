@@ -51,9 +51,14 @@ Export-Package: com.google.common.annotations,
    com.laboki.eclipse.plugin.smartclose.events,
    org.eclipse.swt.widgets,
    com.google.common.eventbus,
+   org.eclipse.core.runtime.preferences,
    com.laboki.eclipse.plugin.smartclose.task",
- com.laboki.eclipse.plugin.smartclose.preferences,
- com.laboki.eclipse.plugin.smartclose.preferences.ui,
+ com.laboki.eclipse.plugin.smartclose.preferences;uses:="org.eclipse.core.runtime.preferences",
+ com.laboki.eclipse.plugin.smartclose.preferences.ui;
+  uses:="org.eclipse.ui,
+   org.eclipse.jface.resource,
+   org.eclipse.swt.widgets,
+   org.eclipse.jface.preference",
  com.laboki.eclipse.plugin.smartclose.task;uses:="org.eclipse.core.runtime.jobs,com.laboki.eclipse.plugin.smartclose.instance,org.eclipse.core.runtime"
 Bundle-ClassPath: .,
  libs/guava-18.0.jar
