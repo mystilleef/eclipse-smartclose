@@ -53,6 +53,7 @@ Export-Package: com.google.common.annotations,
    com.google.common.eventbus,
    com.laboki.eclipse.plugin.smartclose.task",
  com.laboki.eclipse.plugin.smartclose.preferences,
+ com.laboki.eclipse.plugin.smartclose.preferences.ui,
  com.laboki.eclipse.plugin.smartclose.task;uses:="org.eclipse.core.runtime.jobs,com.laboki.eclipse.plugin.smartclose.instance,org.eclipse.core.runtime"
 Bundle-ClassPath: .,
  libs/guava-18.0.jar
