@@ -19,6 +19,8 @@ public enum EditorContext {
 	public static final IWorkbench WORKBENCH = PlatformUI.getWorkbench();
 	public static final Display DISPLAY = EditorContext.WORKBENCH.getDisplay();
 	public static final IJobManager JOB_MANAGER = Job.getJobManager();
+	public static final String PLUGIN_NAME =
+		"com.laboki.eclipse.plugin.smartclose";
 
 	public static Optional<IPartService>
 	getPartService() {

@@ -13,12 +13,13 @@ import com.laboki.eclipse.plugin.smartclose.events.PartCloseTimerEvent;
 import com.laboki.eclipse.plugin.smartclose.events.PartClosedEvent;
 import com.laboki.eclipse.plugin.smartclose.instance.EventBusInstance;
 import com.laboki.eclipse.plugin.smartclose.instance.Instance;
+import com.laboki.eclipse.plugin.smartclose.preferences.Store;
 import com.laboki.eclipse.plugin.smartclose.task.Task;
 import com.laboki.eclipse.plugin.smartclose.task.TaskMutexRule;
 
 public final class PartTracker extends EventBusInstance {
 
-	protected static final int WATERMARK = 5;
+	protected static final int WATERMARK = Store.getNumberOfTabs();
 	private static final TaskMutexRule RULE = new TaskMutexRule();
 	protected final ArrayDeque<IEditorPart> deque = Queues.newArrayDeque();
 

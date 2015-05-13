@@ -11,12 +11,13 @@ import com.laboki.eclipse.plugin.smartclose.events.PartActivatedEvent;
 import com.laboki.eclipse.plugin.smartclose.events.PartClosedEvent;
 import com.laboki.eclipse.plugin.smartclose.instance.EventBusInstance;
 import com.laboki.eclipse.plugin.smartclose.instance.Instance;
+import com.laboki.eclipse.plugin.smartclose.preferences.Store;
 import com.laboki.eclipse.plugin.smartclose.task.AsyncTask;
 import com.laboki.eclipse.plugin.smartclose.task.Task;
 
 public final class ClosePartTimer extends EventBusInstance {
 
-	private static final int DELAY = 300000;
+	protected static final int DELAY = Store.getDelayTime();
 	protected final IEditorPart part;
 	protected Task closeTimer;
 
