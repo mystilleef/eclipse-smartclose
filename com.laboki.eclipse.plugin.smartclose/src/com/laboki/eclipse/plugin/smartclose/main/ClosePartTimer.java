@@ -16,7 +16,7 @@ import com.laboki.eclipse.plugin.smartclose.task.Task;
 
 public final class ClosePartTimer extends EventBusInstance {
 
-	private static final int DELAY = 10000;
+	private static final int DELAY = 300000;
 	protected final IEditorPart part;
 	protected Task closeTimer;
 
