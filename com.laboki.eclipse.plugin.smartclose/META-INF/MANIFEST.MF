@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %Bundle-Name
+Bundle-SymbolicName: com.laboki.eclipse.plugin.smartclose;singleton:=true
+Bundle-Version: 20150512
+Bundle-Activator: com.laboki.eclipse.plugin.smartclose.Activator
+Bundle-Vendor: %Bundle-Vendor
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Export-Package: com.laboki.eclipse.plugin.smartclose;uses:="org.osgi.framework,org.eclipse.ui,org.eclipse.ui.plugin"
