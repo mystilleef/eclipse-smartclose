@@ -10,7 +10,7 @@ import com.google.common.collect.Queues;
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import com.laboki.eclipse.plugin.smartclose.events.PartActivatedEvent;
-import com.laboki.eclipse.plugin.smartclose.events.PartCloseTimerEvent;
+import com.laboki.eclipse.plugin.smartclose.events.StartCloseTimerEvent;
 import com.laboki.eclipse.plugin.smartclose.events.PartClosedEvent;
 import com.laboki.eclipse.plugin.smartclose.events.PreferencesChangedEvent;
 import com.laboki.eclipse.plugin.smartclose.instance.EventBusInstance;
@@ -38,7 +38,7 @@ public final class PartTracker extends EventBusInstance {
 	public void
 	eventHandler(final PreferencesChangedEvent event) {
 		new Task() {
-	
+
 			@Override
 			public void
 			execute() {
@@ -52,7 +52,7 @@ public final class PartTracker extends EventBusInstance {
 	public void
 	eventHandler(final PartActivatedEvent event) {
 		new Task() {
-	
+
 			@Override
 			public void
 			execute() {
@@ -66,7 +66,7 @@ public final class PartTracker extends EventBusInstance {
 	public void
 	eventHandler(final PartClosedEvent event) {
 		new Task() {
-	
+
 			@Override
 			public void
 			execute() {
@@ -93,14 +93,14 @@ public final class PartTracker extends EventBusInstance {
 
 	private void
 	trimDeque() {
-		if (PartTracker.this.deque.size() <= PartTracker.this.watermark) return;
-		PartTracker.broadcastEvent(PartTracker.this.deque.removeLast());
+		if (this.deque.size() <= this.watermark) return;
+		PartTracker.broadcastEvent(this.deque.removeLast());
 		this.trimDeque();
 	}
 
 	private static void
 	broadcastEvent(final IEditorPart part) {
-		EventBus.post(new PartCloseTimerEvent(part));
+		EventBus.post(new StartCloseTimerEvent(part));
 	}
 
 	@Override

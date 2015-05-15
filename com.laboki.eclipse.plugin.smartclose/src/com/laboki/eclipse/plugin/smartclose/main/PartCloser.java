@@ -9,7 +9,7 @@ import com.google.common.collect.Lists;
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import com.laboki.eclipse.plugin.smartclose.events.PartActivatedEvent;
-import com.laboki.eclipse.plugin.smartclose.events.PartCloseTimerEvent;
+import com.laboki.eclipse.plugin.smartclose.events.StartCloseTimerEvent;
 import com.laboki.eclipse.plugin.smartclose.events.PartClosedEvent;
 import com.laboki.eclipse.plugin.smartclose.instance.EventBusInstance;
 import com.laboki.eclipse.plugin.smartclose.task.Task;
@@ -23,7 +23,7 @@ public final class PartCloser extends EventBusInstance {
 	@Subscribe
 	@AllowConcurrentEvents
 	public void
-	eventHandler(final PartCloseTimerEvent event) {
+	eventHandler(final StartCloseTimerEvent event) {
 		new Task() {
 
 			@Override
