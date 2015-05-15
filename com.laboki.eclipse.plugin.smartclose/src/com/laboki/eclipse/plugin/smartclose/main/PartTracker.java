@@ -34,25 +34,11 @@ public final class PartTracker extends EventBusInstance {
 	}
 
 	@Subscribe
-	public void
-	eventHandler(final PartActivatedEvent event) {
-		new Task() {
-
-			@Override
-			public void
-			execute() {
-				PartTracker.this.addUpdate(event.getPart());
-				PartTracker.this.trimDeque();
-			}
-		}.setPriority(Job.INTERACTIVE).setRule(PartTracker.RULE).start();
-	}
-
-	@Subscribe
 	@AllowConcurrentEvents
 	public void
 	eventHandler(final PreferencesChangedEvent event) {
 		new Task() {
-
+	
 			@Override
 			public void
 			execute() {
@@ -64,27 +50,29 @@ public final class PartTracker extends EventBusInstance {
 
 	@Subscribe
 	public void
+	eventHandler(final PartActivatedEvent event) {
+		new Task() {
+	
+			@Override
+			public void
+			execute() {
+				PartTracker.this.addUpdate(event.getPart());
+				PartTracker.this.trimDeque();
+			}
+		}.setPriority(Job.INTERACTIVE).setRule(PartTracker.RULE).start();
+	}
+
+	@Subscribe
+	public void
 	eventHandler(final PartClosedEvent event) {
 		new Task() {
-
+	
 			@Override
 			public void
 			execute() {
 				PartTracker.this.removeUpdate(event.getPart());
 			}
 		}.setPriority(Job.INTERACTIVE).setRule(PartTracker.RULE).start();
-	}
-
-	private void
-	trimDeque() {
-		if (PartTracker.this.deque.size() <= PartTracker.this.watermark) return;
-		PartTracker.broadcastEvent(PartTracker.this.deque.removeLast());
-		this.trimDeque();
-	}
-
-	private static void
-	broadcastEvent(final IEditorPart part) {
-		EventBus.post(new PartCloseTimerEvent(part));
 	}
 
 	protected void
@@ -101,6 +89,18 @@ public final class PartTracker extends EventBusInstance {
 	private boolean
 	dequeContains(final IEditorPart part) {
 		return PartTracker.this.deque.contains(part);
+	}
+
+	private void
+	trimDeque() {
+		if (PartTracker.this.deque.size() <= PartTracker.this.watermark) return;
+		PartTracker.broadcastEvent(PartTracker.this.deque.removeLast());
+		this.trimDeque();
+	}
+
+	private static void
+	broadcastEvent(final IEditorPart part) {
+		EventBus.post(new PartCloseTimerEvent(part));
 	}
 
 	@Override
