@@ -1,6 +1,6 @@
 # Smart Close For Eclipse
 
-__SmartClose__ intelligently closes unused editor tabs after a specified period of time.
+__SmartClose__ intelligently closes unused editor tabs after a period of time.
 
 ### Features
 
