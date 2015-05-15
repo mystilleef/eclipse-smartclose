@@ -42,19 +42,7 @@ public final class PartTracker extends EventBusInstance {
 			public void
 			execute() {
 				PartTracker.this.addUpdate(event.getPart());
-				this.trimDeque();
-			}
-
-			private void
-			trimDeque() {
-				if (PartTracker.this.deque.size() <= PartTracker.this.watermark) return;
-				this.broadcastEvent(PartTracker.this.deque.removeLast());
-				this.trimDeque();
-			}
-
-			private void
-			broadcastEvent(final IEditorPart part) {
-				EventBus.post(new PartCloseTimerEvent(part));
+				PartTracker.this.trimDeque();
 			}
 		}.setPriority(Job.INTERACTIVE).setRule(PartTracker.RULE).start();
 	}
@@ -69,6 +57,7 @@ public final class PartTracker extends EventBusInstance {
 			public void
 			execute() {
 				PartTracker.this.watermark = Store.getNumberOfTabs();
+				PartTracker.this.trimDeque();
 			}
 		}.setRule(PartTracker.RULE).start();
 	}
@@ -84,6 +73,18 @@ public final class PartTracker extends EventBusInstance {
 				PartTracker.this.removeUpdate(event.getPart());
 			}
 		}.setPriority(Job.INTERACTIVE).setRule(PartTracker.RULE).start();
+	}
+
+	private void
+	trimDeque() {
+		if (PartTracker.this.deque.size() <= PartTracker.this.watermark) return;
+		PartTracker.broadcastEvent(PartTracker.this.deque.removeLast());
+		this.trimDeque();
+	}
+
+	private static void
+	broadcastEvent(final IEditorPart part) {
+		EventBus.post(new PartCloseTimerEvent(part));
 	}
 
 	protected void

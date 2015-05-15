@@ -19,51 +19,26 @@ import com.laboki.eclipse.plugin.smartclose.task.TaskMutexRule;
 
 public final class ClosePartTimer extends EventBusInstance {
 
+	private final IEditorPart part;
+	private long delay = Store.getDelayTime();
 	private static final TaskMutexRule RULE = new TaskMutexRule();
-	protected int delay = Store.getDelayTime();
-	protected final IEditorPart part;
-	protected Task closeTimer;
+	private final Task closer = new Closer();
 
 	public ClosePartTimer(final IEditorPart part) {
 		this.part = part;
-		this.closeTimer = this.startTimer();
-	}
-
-	private Task
-	startTimer() {
-		return new AsyncTask() {
-
-			@Override
-			public void
-			execute() {
-				if (this.editorIsDirty()) this.reschedule(ClosePartTimer.this.delay);
-				else this.closePart(ClosePartTimer.this.part);
-			}
-
-			private boolean
-			editorIsDirty() {
-				return ClosePartTimer.this.part.isDirty();
-			}
-
-			private void
-			closePart(final IEditorPart part) {
-				final Optional<IWorkbenchPage> page = this.getPage();
-				if (!page.isPresent()) return;
-				if (page.get().isEditorPinned(part)) return;
-				page.get().closeEditor(part, false);
-			}
-
-			private Optional<IWorkbenchPage>
-			getPage() {
-				return EditorContext.getActivePage(EditorContext.getActiveWorkbenchWindow());
-			}
-		};
 	}
 
 	@Override
 	public Instance
 	start() {
-		this.closeTimer.setDelay(this.delay).start();
+		new Task() {
+
+			@Override
+			public void
+			execute() {
+				ClosePartTimer.this.closer.setDelay(ClosePartTimer.this.delay).start();
+			}
+		}.start();
 		return super.start();
 	}
 
@@ -71,13 +46,14 @@ public final class ClosePartTimer extends EventBusInstance {
 	@AllowConcurrentEvents
 	public void
 	eventHandler(final PreferencesChangedEvent event) {
-		new Task() {
+		new AsyncTask() {
 
 			@Override
 			public void
 			execute() {
 				ClosePartTimer.this.delay = Store.getDelayTime();
-				ClosePartTimer.this.closeTimer.reschedule(ClosePartTimer.this.delay);
+				ClosePartTimer.this.closer.stop();
+				ClosePartTimer.this.closer.setDelay(ClosePartTimer.this.delay).start();
 			}
 		}.setRule(ClosePartTimer.RULE).start();
 	}
@@ -116,7 +92,35 @@ public final class ClosePartTimer extends EventBusInstance {
 	@Override
 	public Instance
 	stop() {
-		this.closeTimer.stop();
+		this.closer.stop();
 		return super.stop();
+	}
+
+	private final class Closer extends AsyncTask {
+
+		@Override
+		public void
+		execute() {
+			if (this.editorIsDirty()) this.reschedule(ClosePartTimer.this.delay);
+			else this.closePart(ClosePartTimer.this.part);
+		}
+
+		private boolean
+		editorIsDirty() {
+			return ClosePartTimer.this.part.isDirty();
+		}
+
+		private void
+		closePart(final IEditorPart part) {
+			final Optional<IWorkbenchPage> page = this.getPage();
+			if (!page.isPresent()) return;
+			if (page.get().isEditorPinned(part)) return;
+			page.get().closeEditor(part, false);
+		}
+
+		private Optional<IWorkbenchPage>
+		getPage() {
+			return EditorContext.getActivePage(EditorContext.getActiveWorkbenchWindow());
+		}
 	}
 }

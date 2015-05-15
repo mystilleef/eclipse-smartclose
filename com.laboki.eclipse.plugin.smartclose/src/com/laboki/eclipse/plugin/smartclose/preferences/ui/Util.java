@@ -3,6 +3,7 @@ package com.laboki.eclipse.plugin.smartclose.preferences.ui;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
@@ -44,13 +45,35 @@ public enum Util {
 	 * @return the new label
 	 */
 	public static Label
-	createLabel(final Composite parent, final String text) {
-		final Label label = new Label(parent, SWT.LEFT);
+	createLabel(final Composite parent, final int span, final String text) {
+		final Label label = new Label(parent, SWT.RIGHT);
 		label.setText(text);
 		final GridData data = new GridData();
-		data.horizontalSpan = 2;
-		data.horizontalAlignment = GridData.FILL;
+		data.horizontalSpan = span;
+		data.verticalAlignment = SWT.CENTER;
+		data.horizontalAlignment = SWT.FILL;
+		data.grabExcessHorizontalSpace = false;
+		data.grabExcessVerticalSpace = false;
+		data.widthHint = parent.getMonitor().getClientArea().width / 8;
 		label.setLayoutData(data);
+		parent.layout();
+		parent.pack();
 		return label;
+	}
+
+	public static Button
+	createButton(final Composite parent, final int span, final String text) {
+		final Button button = new Button(parent, SWT.FLAT);
+		button.setText(text);
+		final GridData data = new GridData();
+		data.horizontalSpan = span;
+		data.verticalAlignment = SWT.CENTER;
+		data.horizontalAlignment = SWT.BEGINNING;
+		data.grabExcessHorizontalSpace = false;
+		data.grabExcessVerticalSpace = false;
+		button.setLayoutData(data);
+		parent.layout();
+		parent.pack();
+		return button;
 	}
 }

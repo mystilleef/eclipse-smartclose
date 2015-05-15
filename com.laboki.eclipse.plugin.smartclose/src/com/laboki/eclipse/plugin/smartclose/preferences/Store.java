@@ -14,7 +14,7 @@ public enum Store {
 
 	private static final int DEFAULT_NUMBER_OF_TABS = 5;
 	private static final String NUMBER_OF_TABS = "SmartCloseNumberOfTabs";
-	private static final int DEFAULT_DELAY_TIME = 300000;
+	private static final long DEFAULT_DELAY_TIME = 300000;
 	private static final String DELAY_TIME = "SmartCloseDelayTime";
 	private static final Logger LOGGER = Logger.getLogger(Store.class.getName());
 
@@ -28,14 +28,14 @@ public enum Store {
 		Store.setInt(Store.NUMBER_OF_TABS, numberTabs);
 	}
 
-	public static int
+	public static long
 	getDelayTime() {
-		return Store.getInt(Store.DELAY_TIME, Store.DEFAULT_DELAY_TIME);
+		return Store.getLong(Store.DELAY_TIME, Store.DEFAULT_DELAY_TIME);
 	}
 
 	public static void
-	setDelayTime(final int delayTime) {
-		Store.setInt(Store.DELAY_TIME, delayTime);
+	setDelayTime(final long delayTime) {
+		Store.setLong(Store.DELAY_TIME, delayTime);
 	}
 
 	private static int
@@ -45,10 +45,24 @@ public enum Store {
 		return pref.getInt(key, defaultValue);
 	}
 
+	private static long
+	getLong(final String key, final long defaultValue) {
+		final IEclipsePreferences pref = Store.getPreferences();
+		Store.update(pref);
+		return pref.getLong(key, defaultValue);
+	}
+
 	private static void
 	setInt(final String key, final int value) {
 		final IEclipsePreferences pref = Store.getPreferences();
 		pref.putInt(key, value);
+		Store.update(pref);
+	}
+
+	private static void
+	setLong(final String key, final long value) {
+		final IEclipsePreferences pref = Store.getPreferences();
+		pref.putLong(key, value);
 		Store.update(pref);
 	}
 
