@@ -35,10 +35,12 @@ public final class PreferencesPage extends PreferencePage
 	createContents(final Composite parent) {
 		this.startDialogListener(parent);
 		final Composite composite = Util.createComposite(parent, 2);
+		PreferencesPage.createDescrptionLabel(composite);
 		PreferencesPage.createTabsLabel(composite);
 		PreferencesPage.createTabsButton(composite);
 		PreferencesPage.createDelayLabel(composite);
 		PreferencesPage.createDelayButton(composite);
+		PreferencesPage.update(parent);
 		return composite;
 	}
 
@@ -49,8 +51,19 @@ public final class PreferencesPage extends PreferencePage
 	}
 
 	private static void
+	createDescrptionLabel(final Composite parent) {
+		final String string =
+			"SmartClose intelligently closes unused editor "
+				+ "tabs after a period of time. You can set the number of editor tabs "
+				+ "to leave open and the period of time before closing unused editor "
+				+ "tabs here. Editor tabs that are pinned, or that have unsaved files, "
+				+ "will not be automatically closed.";
+		Util.createDescription(parent, 2, string);
+	}
+
+	private static void
 	createTabsLabel(final Composite parent) {
-		final String string = "Number of tabs to leave open:";
+		final String string = "Number of tabs to leave open: ";
 		Util.createLabel(parent, 1, string);
 	}
 
@@ -61,13 +74,20 @@ public final class PreferencesPage extends PreferencePage
 
 	private static void
 	createDelayLabel(final Composite parent) {
-		final String string = "Delay before closing unused tabs:";
+		final String string = "Delay before closing unused tabs: ";
 		Util.createLabel(parent, 1, string);
 	}
 
 	private static void
 	createDelayButton(final Composite parent) {
 		new DelayButton(parent).start();
+	}
+
+	private static void
+	update(final Composite parent) {
+		parent.pack();
+		parent.layout();
+		parent.update();
 	}
 
 	@Override
