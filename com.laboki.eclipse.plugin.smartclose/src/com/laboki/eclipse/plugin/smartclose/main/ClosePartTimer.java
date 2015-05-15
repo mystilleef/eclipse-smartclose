@@ -101,8 +101,13 @@ public final class ClosePartTimer extends EventBusInstance {
 		@Override
 		public void
 		execute() {
-			if (this.editorIsDirty()) this.reschedule(ClosePartTimer.this.delay);
+			if (this.editorInUse()) this.reschedule(ClosePartTimer.this.delay);
 			else this.closePart(ClosePartTimer.this.part);
+		}
+
+		private boolean
+		editorInUse() {
+			return this.editorIsDirty() || this.editorIsPinned();
 		}
 
 		private boolean
@@ -110,11 +115,17 @@ public final class ClosePartTimer extends EventBusInstance {
 			return ClosePartTimer.this.part.isDirty();
 		}
 
+		private boolean
+		editorIsPinned() {
+			final Optional<IWorkbenchPage> page = this.getPage();
+			if (!page.isPresent()) return false;
+			return page.get().isEditorPinned(ClosePartTimer.this.part);
+		}
+
 		private void
 		closePart(final IEditorPart part) {
 			final Optional<IWorkbenchPage> page = this.getPage();
 			if (!page.isPresent()) return;
-			if (page.get().isEditorPinned(part)) return;
 			page.get().closeEditor(part, false);
 		}
 
