@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: com.laboki.eclipse.plugin.smartclose;singleton:=true
-Bundle-Version: 20150513
+Bundle-Version: 20150514
 Bundle-Activator: com.laboki.eclipse.plugin.smartclose.Activator
 Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: org.eclipse.ui,
@@ -51,13 +51,14 @@ Export-Package: com.google.common.annotations,
    com.laboki.eclipse.plugin.smartclose.events,
    org.eclipse.swt.widgets,
    com.google.common.eventbus,
-   org.eclipse.core.runtime.preferences,
-   com.laboki.eclipse.plugin.smartclose.task",
+   org.eclipse.core.runtime.preferences",
  com.laboki.eclipse.plugin.smartclose.preferences;uses:="org.eclipse.core.runtime.preferences",
  com.laboki.eclipse.plugin.smartclose.preferences.ui;
   uses:="org.eclipse.ui,
+   com.laboki.eclipse.plugin.smartclose.instance,
    org.eclipse.jface.resource,
    org.eclipse.swt.widgets,
+   com.laboki.eclipse.plugin.smartclose.events,
    org.eclipse.jface.preference",
  com.laboki.eclipse.plugin.smartclose.task;uses:="org.eclipse.core.runtime.jobs,com.laboki.eclipse.plugin.smartclose.instance,org.eclipse.core.runtime"
 Bundle-ClassPath: .,
