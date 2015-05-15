@@ -24,6 +24,11 @@ You can use this plugin in conjunction with __[FastOpen](https://mystilleef.gith
 
 * You need __Eclipse 4.4(Luna)__ or later to use this plugin.
 
+### Eclipse Market Place
+
+* __[Eclipse Market Place](http://marketplace.eclipse.org/content/smart-close)__
+
+
 ### Update Site
 
 * __[Update Site](https://raw.github.com/mystilleef/eclipse-smartclose-updatesite/master/com.laboki.eclipse.updatesite.smartclose)__
