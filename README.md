@@ -2,6 +2,8 @@
 
 __SmartClose__ intelligently closes unused editor tabs after a period of time.
 
+You can use this plugin in conjunction with __FastOpen("https://mystilleef.github.io/eclipse4-fastopen/")__ to open closed editor tabs quickly.
+
 ### Features
 
 * Set period of time to close unused editor tabs.
