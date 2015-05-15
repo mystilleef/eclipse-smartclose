@@ -10,9 +10,9 @@ import com.google.common.collect.Queues;
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import com.laboki.eclipse.plugin.smartclose.events.PartActivatedEvent;
-import com.laboki.eclipse.plugin.smartclose.events.StartCloseTimerEvent;
 import com.laboki.eclipse.plugin.smartclose.events.PartClosedEvent;
 import com.laboki.eclipse.plugin.smartclose.events.PreferencesChangedEvent;
+import com.laboki.eclipse.plugin.smartclose.events.StartCloseTimerEvent;
 import com.laboki.eclipse.plugin.smartclose.instance.EventBusInstance;
 import com.laboki.eclipse.plugin.smartclose.instance.Instance;
 import com.laboki.eclipse.plugin.smartclose.preferences.Store;
@@ -23,13 +23,13 @@ public final class PartTracker extends EventBusInstance {
 
 	protected int watermark = Store.getNumberOfTabs();
 	private static final TaskMutexRule RULE = new TaskMutexRule();
-	protected final ArrayDeque<IEditorPart> deque = Queues.newArrayDeque();
+	protected final ArrayDeque<IEditorPart> trackedTabs = Queues.newArrayDeque();
 
 	@Override
 	public Instance
 	start() {
 		final Optional<IEditorPart> part = EditorContext.getEditor();
-		if (part.isPresent()) this.deque.addFirst(part.get());
+		if (part.isPresent()) this.trackedTabs.addFirst(part.get());
 		return super.start();
 	}
 
@@ -43,7 +43,7 @@ public final class PartTracker extends EventBusInstance {
 			public void
 			execute() {
 				PartTracker.this.watermark = Store.getNumberOfTabs();
-				PartTracker.this.trimDeque();
+				PartTracker.this.closeUntrackedTabs();
 			}
 		}.setRule(PartTracker.RULE).start();
 	}
@@ -57,7 +57,7 @@ public final class PartTracker extends EventBusInstance {
 			public void
 			execute() {
 				PartTracker.this.addUpdate(event.getPart());
-				PartTracker.this.trimDeque();
+				PartTracker.this.closeUntrackedTabs();
 			}
 		}.setPriority(Job.INTERACTIVE).setRule(PartTracker.RULE).start();
 	}
@@ -78,24 +78,24 @@ public final class PartTracker extends EventBusInstance {
 	protected void
 	addUpdate(final IEditorPart part) {
 		this.removeUpdate(part);
-		this.deque.addFirst(part);
+		this.trackedTabs.addFirst(part);
 	}
 
 	protected void
 	removeUpdate(final IEditorPart part) {
-		if (this.dequeContains(part)) this.deque.remove(part);
+		if (this.dequeContains(part)) this.trackedTabs.remove(part);
 	}
 
 	private boolean
 	dequeContains(final IEditorPart part) {
-		return PartTracker.this.deque.contains(part);
+		return PartTracker.this.trackedTabs.contains(part);
 	}
 
 	private void
-	trimDeque() {
-		if (this.deque.size() <= this.watermark) return;
-		PartTracker.broadcastEvent(this.deque.removeLast());
-		this.trimDeque();
+	closeUntrackedTabs() {
+		if (this.trackedTabs.size() <= this.watermark) return;
+		PartTracker.broadcastEvent(this.trackedTabs.removeLast());
+		this.closeUntrackedTabs();
 	}
 
 	private static void
@@ -106,7 +106,7 @@ public final class PartTracker extends EventBusInstance {
 	@Override
 	public Instance
 	stop() {
-		this.deque.clear();
+		this.trackedTabs.clear();
 		return super.stop();
 	}
 }
