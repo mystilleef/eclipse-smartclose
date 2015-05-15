@@ -11,7 +11,7 @@ __SmartClose__ intelligently closes unused editor tabs after a period of time.
 
 ### Website
 
-* __[Official Website]__(https://mystilleef.github.io/eclipse-smartclose/)__
+* __[Official Website](https://mystilleef.github.io/eclipse-smartclose/)__
 
 ### Donate
 
