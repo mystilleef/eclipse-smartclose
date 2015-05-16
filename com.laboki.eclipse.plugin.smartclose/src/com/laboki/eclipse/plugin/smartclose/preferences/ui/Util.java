@@ -5,7 +5,6 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
@@ -50,7 +49,7 @@ public enum Util {
 	 */
 	public static Label
 	createLabel(final Composite parent, final int span, final String text) {
-		final Label label = new Label(parent, SWT.RIGHT);
+		final Label label = new Label(parent, SWT.LEFT);
 		label.setText(text);
 		// Util.setBoldFont(label);
 		final GridData data = new GridData();
@@ -98,21 +97,5 @@ public enum Util {
 		parent.pack();
 		parent.update();
 		return label;
-	}
-
-	public static Button
-	createButton(final Composite parent, final int span, final String text) {
-		final Button button = new Button(parent, SWT.FLAT);
-		button.setText(text);
-		final GridData data = new GridData();
-		data.horizontalSpan = span;
-		data.verticalAlignment = SWT.CENTER;
-		data.horizontalAlignment = SWT.BEGINNING;
-		data.grabExcessHorizontalSpace = false;
-		data.grabExcessVerticalSpace = false;
-		button.setLayoutData(data);
-		parent.layout();
-		parent.pack();
-		return button;
 	}
 }
